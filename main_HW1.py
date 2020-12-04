@@ -38,6 +38,7 @@ if __name__ == '__main__':
     CTG_features = CTG_dataset[['LB', 'AC', 'FM', 'UC', 'DL', 'DS', 'DR', 'DP', 'ASTV', 'MSTV', 'ALTV', 'MLTV',
                                 'Width', 'Min', 'Max', 'Nmax', 'Nzeros', 'Mode', 'Mean', 'Median', 'Variance',
                                 'Tendency']]
+    print(CTG_features)
     CTG_morph = CTG_dataset[['CLASS']]
     fetal_state = CTG_dataset[['NSP']]
 

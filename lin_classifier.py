@@ -19,7 +19,14 @@ def pred_log(logreg, X_train, y_train, X_test, flag=False):
     :return: A two elements tuple containing the predictions and the weightning matrix
     """
     # ------------------ IMPLEMENT YOUR CODE HERE:-----------------------------
-
+    if flag == false:
+        logreg.fit(X_train,y_train)
+        y_pred_log = logreg.predict(X_test)
+        w_log = logreg.Coefficient
+    if flag == true:
+        logreg.fit(X_train, y_train)
+        y_pred_log = logreg.predict_try(X_test)
+        w_log = logreg.Coefficient
     # -------------------------------------------------------------------------
     return y_pred_log, w_log
 
@@ -83,7 +90,13 @@ def cv_kfold(X, y, C, penalty, K, mode):
             for train_idx, val_idx in kf.split(X, y):
                 x_train, x_val = X.iloc[train_idx], X.iloc[val_idx]
         # ------------------ IMPLEMENT YOUR CODE HERE:-----------------------------
-
+                y_val, y_train  =  y[val_idx], y[train_idx]
+                v, w = pred_log(logreg, nsd(x_train, mode = mode, flag = False), y_train, nsd(x_val, mode = mode, flag = False), flag = True)
+                loss_val_vec[k] = log_loss(y_val, v)
+                k += 1
+                mu = loss_val_vec.mean()
+                std = loss_val_vec.std()
+                validation_dict.append({'mu': mu, 'sigma': std, 'C': c, 'penalty': p})
         # --------------------------------------------------------------------------
     return validation_dict
 
