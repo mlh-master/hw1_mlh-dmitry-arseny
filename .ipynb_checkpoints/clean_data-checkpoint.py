@@ -48,8 +48,8 @@ def nan2num_samp(CTG_features, extra_feature):
         if i == extra_feature:
             continue;
         c_cdf[i] = pd.to_numeric(CTG_features[i], errors='coerce').fillna(np.random.choice(CTG_features[i].astype(float, errors='ignore')))
-        # { key : pd.to_numeric(value, errors='coerce') for (key, value) in CTG_features[i].fillna(np.random.choice(CTG_features[i].astype(float, errors='ignore')))  if key != extra_feature}
-    print(c_cdf)
+    # { key : pd.to_numeric(value, errors='coerce') for (key, value) in CTG_features[i].fillna(np.random.choice(CTG_features[i].astype(float, errors='ignore')))  if key != extra_feature} # that was too complicated for me this time:( 
+    # print(c_cdf)
     # -------------------------------------------------------------------------
     return pd.DataFrame(c_cdf)
 
@@ -61,7 +61,7 @@ def sum_stat(c_feat):
     :return: Summary statistics as a dicionary of dictionaries (called d_summary) as explained in the notebook
     """
     # ------------------ IMPLEMENT YOUR CODE HERE:------------------------------
-
+    d_summary = {value: {'min':c_feat[value].min(), 'q1': np.percentile(c_feat[value], 25), 'median': np.percentile(c_feat[value], 50), 'q3': np.percentile(c_feat[value], 75), 'max': c_feat[value].max()} for value in c_feat}
     # -------------------------------------------------------------------------
     return d_summary
 

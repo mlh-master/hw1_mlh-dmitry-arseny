@@ -25,7 +25,7 @@ def pred_log(logreg, X_train, y_train, X_test, flag=False):
         w_log = logreg.Coefficient
     if flag == true:
         logreg.fit(X_train, y_train)
-        y_pred_log = logreg.predict_try(X_test)
+        y_pred_log = logreg.predict_istabrut(X_test)
         w_log = logreg.Coefficient
     # -------------------------------------------------------------------------
     return y_pred_log, w_log
