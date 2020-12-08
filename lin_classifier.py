@@ -18,16 +18,15 @@ def pred_log(logreg, X_train, y_train, X_test, flag=False):
     :param flag: A boolean determining whether to return the predicted he probabilities of the classes (relevant after Q11)
     :return: A two elements tuple containing the predictions and the weightning matrix
     """
-    # ------------------ IMPLEMENT YOUR CODE HERE:-----------------------------
-    if flag == false:
-        logreg.fit(X_train,y_train)
+    
+    logreg.fit(X_train, y_train)
+    if flag == False:
         y_pred_log = logreg.predict(X_test)
-        w_log = logreg.Coefficient
-    if flag == true:
-        logreg.fit(X_train, y_train)
-        y_pred_log = logreg.predict_istabrut(X_test)
-        w_log = logreg.Coefficient
-    # -------------------------------------------------------------------------
+        w_log = logreg.coef_
+    if flag != False:
+        y_pred_log = logreg.predict_proba(X_test)
+        w_log = logreg.coef_
+   
     return y_pred_log, w_log
 
 
@@ -89,13 +88,12 @@ def cv_kfold(X, y, C, penalty, K, mode):
             k = 0
             for train_idx, val_idx in kf.split(X, y):
                 x_train, x_val = X.iloc[train_idx], X.iloc[val_idx]
-        # ------------------ IMPLEMENT YOUR CODE HERE:-----------------------------
+        # ------------------ IMPLEMENT YOUR CODE HERE:------------------------------
                 y_val, y_train  =  y[val_idx], y[train_idx]
                 v, w = pred_log(logreg, nsd(x_train, mode = mode, flag = False), y_train, nsd(x_val, mode = mode, flag = False), flag = True)
                 loss_val_vec[k] = log_loss(y_val, v)
                 k += 1
-                mu = loss_val_vec.mean()
-                std = loss_val_vec.std()
+                mu, std = loss_val_vec.mean(), loss_val_vec.std()
                 validation_dict.append({'mu': mu, 'sigma': std, 'C': c, 'penalty': p})
         # --------------------------------------------------------------------------
     return validation_dict
@@ -111,7 +109,8 @@ def odds_ratio(w, X, selected_feat='LB'):
              odds_ratio: the odds ratio of the selected feature and label
     """
     # ------------------ IMPLEMENT YOUR CODE HERE:-----------------------------
-
+    # odd_ratio, odds = np.exp(pd.DataFrame(w, columns=X.columns).at[0,selected_feat]), np.median(np.exp(X @ np.transpose(w[0,:])))
+    odd_ratio, odds = np.exp(w[0, X.columns.get_loc(selected_feat)]), np.median(np.exp(X @ np.transpose(w[0,:])))
     # --------------------------------------------------------------------------
 
     return odds, odd_ratio
